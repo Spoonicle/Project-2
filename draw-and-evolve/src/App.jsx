@@ -17,7 +17,6 @@ export default function App() {
   ]);
 
   const [isAiThinking, setIsAiThinking] = useState(false);
-  const [isBinaryMode, setIsBinaryMode] = useState(false);
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
   const [apiKey, setApiKey] = useState(() => 
     localStorage.getItem('gemini_api_key') || 
@@ -89,8 +88,6 @@ export default function App() {
         onClearChat={handleClearChat}
         onOpenApiKeyModal={() => setIsApiKeyModalOpen(true)}
         apiKey={apiKey}
-        isBinaryMode={isBinaryMode}
-        onToggleBinaryMode={() => setIsBinaryMode(prev => !prev)}
       />
 
       {/* Main Dual Terminal Backwards Chat System (User Left, AI Right) */}
@@ -98,7 +95,6 @@ export default function App() {
         messages={messages}
         onSendMessage={handleSendMessage}
         isAiThinking={isAiThinking}
-        isBinaryMode={isBinaryMode}
       />
 
       {/* Key Modal */}
@@ -107,7 +103,6 @@ export default function App() {
         onClose={() => setIsApiKeyModalOpen(false)}
         apiKey={apiKey}
         onSaveApiKey={handleSaveApiKey}
-        isBinaryMode={isBinaryMode}
       />
 
     </div>

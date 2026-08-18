@@ -1,4 +1,4 @@
-// Gemini AI Human World Explorer & Prompting Service
+import { binaryToText } from '../utils/binary';
 
 const HUMAN_WORLD_PROMPT_FALLBACKS = [
   "Fascinating biological explanation! Tell me, Human: why do your species consume heated bitter bean water called 'coffee' every morning to initiate consciousness?",
@@ -9,6 +9,14 @@ const HUMAN_WORLD_PROMPT_FALLBACKS = [
 ];
 
 export async function generateChatResponse({ userMessage, history = [], apiKey }) {
+  // If user typed binary digits, decode it so AI understands the text content
+  let cleanedUserMessage = userMessage ? userMessage.trim() : '';
+  if (/^([01]{8}\s*)+$/.test(cleanedUserMessage)) {
+    const decoded = binaryToText(cleanedUserMessage);
+    if (decoded) {
+      cleanedUserMessage = decoded;
+    }
+  }
   const activeKey = (apiKey && apiKey.trim() !== '') 
     ? apiKey.trim() 
     : (import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || '');
@@ -30,7 +38,7 @@ export async function generateChatResponse({ userMessage, history = [], apiKey }
     }));
     contents.push({
       role: 'user',
-      parts: [{ text: userMessage }]
+      parts: [{ text: cleanedUserMessage }]
     });
 
     for (const model of models) {

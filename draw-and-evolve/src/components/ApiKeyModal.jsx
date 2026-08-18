@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X, Key, Check, ExternalLink, ShieldCheck } from 'lucide-react';
 import { textToBinary } from '../utils/binary';
 
-const ApiKeyModal = ({ isOpen, onClose, apiKey, onSaveApiKey, isBinaryMode }) => {
+const ApiKeyModal = ({ isOpen, onClose, apiKey, onSaveApiKey }) => {
   const [inputKey, setInputKey] = useState(apiKey || '');
   const [isSaved, setIsSaved] = useState(false);
 
@@ -39,11 +39,11 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSaveApiKey, isBinaryMode }) =>
               <Key className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-mono font-extrabold text-sm text-white" title={isBinaryMode ? textToBinary("API_KEY_CONFIG") : "API_KEY_CONFIG"}>
-                {isBinaryMode ? textToBinary("API_KEY_CONFIG") : "API_KEY_CONFIG"}
+              <h3 className="font-mono font-extrabold text-sm text-white" title={textToBinary("API_KEY_CONFIG")}>
+                {textToBinary("API_KEY_CONFIG")}
               </h3>
-              <p className="text-xs text-slate-400" title={isBinaryMode ? textToBinary("MULTIMODAL_VISION") : "MULTIMODAL_VISION"}>
-                {isBinaryMode ? textToBinary("MULTIMODAL_VISION") : "MULTIMODAL_VISION"}
+              <p className="text-xs text-slate-400" title={textToBinary("MULTIMODAL_VISION")}>
+                {textToBinary("MULTIMODAL_VISION")}
               </p>
             </div>
           </div>
@@ -56,18 +56,18 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSaveApiKey, isBinaryMode }) =>
         {/* Content */}
         <form onSubmit={handleSave} className="p-5 flex flex-col gap-4 bg-[#000000]">
           <div className="text-xs text-slate-300 leading-relaxed bg-[#0a0a0a] p-3.5 rounded border border-white/40">
-            <p className="mb-2" title={isBinaryMode ? textToBinary("GEMINI_3.6_FLASH_VISION_ENGINE") : "GEMINI_3.6_FLASH_VISION_ENGINE"}>
-              {isBinaryMode ? textToBinary("GEMINI_3.6_FLASH_VISION_ENGINE") : "GEMINI_3.6_FLASH_VISION_ENGINE"}
+            <p className="mb-2" title={textToBinary("GEMINI_3.6_FLASH_VISION_ENGINE")}>
+              {textToBinary("GEMINI_3.6_FLASH_VISION_ENGINE")}
             </p>
-            <div className="flex items-center gap-1.5 text-white font-mono" title={isBinaryMode ? textToBinary("LOCAL_STORAGE") : "LOCAL_STORAGE"}>
+            <div className="flex items-center gap-1.5 text-white font-mono" title={textToBinary("LOCAL_STORAGE")}>
               <ShieldCheck className="w-4 h-4 text-white" />
-              <span>{isBinaryMode ? textToBinary("LOCAL_STORAGE") : "LOCAL_STORAGE"}</span>
+              <span>{textToBinary("LOCAL_STORAGE")}</span>
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-white mb-1.5 font-mono" title={isBinaryMode ? textToBinary("ENTER_KEY") : "ENTER_KEY"}>
-              {isBinaryMode ? textToBinary("ENTER_KEY") : "ENTER_KEY"} &gt;
+            <label className="block text-xs font-bold text-white mb-1.5 font-mono" title={textToBinary("ENTER_KEY")}>
+              {textToBinary("ENTER_KEY")} &gt;
             </label>
             <input
               type="password"
@@ -83,9 +83,9 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSaveApiKey, isBinaryMode }) =>
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-slate-300 hover:text-white underline flex items-center gap-1.5 font-mono"
-            title={isBinaryMode ? textToBinary("GOOGLE_AI_STUDIO") : "GOOGLE_AI_STUDIO"}
+            title={textToBinary("GOOGLE_AI_STUDIO")}
           >
-            <span>{isBinaryMode ? textToBinary("GOOGLE_AI_STUDIO") : "GOOGLE_AI_STUDIO"}</span>
+            <span>{textToBinary("GOOGLE_AI_STUDIO")}</span>
             <ExternalLink className="w-3 h-3" />
           </a>
 
@@ -94,9 +94,9 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSaveApiKey, isBinaryMode }) =>
               type="button"
               onClick={handleClear}
               className="text-xs text-slate-400 hover:text-white font-bold"
-              title={isBinaryMode ? textToBinary("CLEAR") : "CLEAR"}
+              title={textToBinary("CLEAR")}
             >
-              [{isBinaryMode ? textToBinary("CLEAR") : "CLEAR"}]
+              [{textToBinary("CLEAR")}]
             </button>
 
             <div className="flex items-center gap-2">
@@ -105,7 +105,7 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSaveApiKey, isBinaryMode }) =>
                 onClick={onClose}
                 className="bg-[#000000] text-slate-300 border border-slate-600 text-xs py-1.5 px-3 rounded hover:text-white hover:border-white"
               >
-                {isBinaryMode ? textToBinary("CANCEL") : "CANCEL"}
+                {textToBinary("CANCEL")}
               </button>
               <button
                 type="submit"
@@ -114,10 +114,10 @@ const ApiKeyModal = ({ isOpen, onClose, apiKey, onSaveApiKey, isBinaryMode }) =>
                 {isSaved ? (
                   <>
                     <Check className="w-3.5 h-3.5 text-current" />
-                    <span>{isBinaryMode ? textToBinary("SAVED") : "SAVED"}</span>
+                    <span>{textToBinary("SAVED")}</span>
                   </>
                 ) : (
-                  <span>{isBinaryMode ? textToBinary("SAVE") : "SAVE"}</span>
+                  <span>{textToBinary("SAVE")}</span>
                 )}
               </button>
             </div>

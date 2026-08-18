@@ -5,8 +5,7 @@ import { textToBinary } from '../utils/binary';
 const DualChatPanel = ({
   messages,
   onSendMessage,
-  isAiThinking,
-  isBinaryMode
+  isAiThinking
 }) => {
   const [inputText, setInputText] = useState('');
   const chatStreamEndRef = useRef(null);
@@ -24,10 +23,70 @@ const DualChatPanel = ({
   };
 
   const handleKeyDown = (e) => {
+    // 1. Submit on Enter
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e);
+      return;
     }
+
+    // 2. Handle Backspace key cleanly
+    if (e.key === 'Backspace') {
+      e.preventDefault();
+      setInputText(prev => {
+        if (!prev) return '';
+        if (prev.endsWith(' ')) {
+          return prev.slice(0, -2);
+        }
+        return prev.slice(0, -1);
+      });
+      return;
+    }
+
+    // 3. Allow standard system shortcut & navigation keys
+    if (
+      e.ctrlKey || 
+      e.metaKey || 
+      e.altKey || 
+      e.key === 'Tab' || 
+      e.key === 'Escape' || 
+      e.key.startsWith('Arrow')
+    ) {
+      return;
+    }
+
+    // 4. Intercept any single character input (letters, numbers, symbols, space)
+    if (e.key.length === 1) {
+      e.preventDefault();
+      
+      // If 0 or 1, append the bit directly
+      if (e.key === '0' || e.key === '1') {
+        const bitToAdd = e.key;
+        setInputText(prev => {
+          const cleanBits = prev.replace(/\s+/g, '');
+          if (cleanBits.length > 0 && cleanBits.length % 8 === 0 && !prev.endsWith(' ')) {
+            return prev + ' ' + bitToAdd;
+          }
+          return prev + bitToAdd;
+        });
+      } else {
+        // For any other letter/character, convert it to its exact 8-bit ASCII binary byte
+        const binaryByte = e.key.charCodeAt(0).toString(2).padStart(8, '0');
+        setInputText(prev => {
+          if (!prev) return binaryByte + ' ';
+          if (prev.endsWith(' ')) return prev + binaryByte + ' ';
+          return prev + ' ' + binaryByte + ' ';
+        });
+      }
+    }
+  };
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData('text');
+    if (!pastedData) return;
+    const converted = textToBinary(pastedData);
+    setInputText(prev => (prev ? `${prev} ${converted}` : converted));
   };
 
   return (
@@ -46,19 +105,19 @@ const DualChatPanel = ({
                   {msg.sender === 'user' ? (
                     <>
                       <User className="w-3 h-3 text-white" />
-                      <span>{isBinaryMode ? textToBinary("user@term:~$") : "user@term:~$"}</span>
+                      <span>{textToBinary("user@term:~$")}</span>
                     </>
                   ) : (
                     <>
                       <Cpu className="w-3 h-3 text-white" />
-                      <span>{isBinaryMode ? textToBinary("gemini-ai@3.6-flash:~$") : "gemini-ai@3.6-flash:~$"}</span>
+                      <span>{textToBinary("gemini-ai@3.6-flash:~$")}</span>
                     </>
                   )}
                 </span>
-                <span>{isBinaryMode ? textToBinary(msg.timestamp) : msg.timestamp}</span>
+                <span>{textToBinary(msg.timestamp)}</span>
               </div>
-              <p className="msg-text" title={msg.text}>
-                {isBinaryMode ? textToBinary(msg.text) : msg.text}
+              <p className="msg-text" title={textToBinary(msg.text)}>
+                {textToBinary(msg.text)}
               </p>
             </div>
           </div>
@@ -70,9 +129,7 @@ const DualChatPanel = ({
               <div className="flex items-center gap-2 text-xs text-slate-300 font-mono">
                 <RefreshCw className="w-4 h-4 animate-spin text-white" />
                 <span>
-                  {isBinaryMode 
-                    ? textToBinary("GEMINI_PROCESSING_RESPONSE...") 
-                    : "[GEMINI_3.6_FLASH_PROCESSING_RESPONSE...]"}
+                  {textToBinary("GEMINI_PROCESSING_RESPONSE...")}
                 </span>
               </div>
             </div>
@@ -85,14 +142,15 @@ const DualChatPanel = ({
       {/* Extended Bottom User Terminal Input Bar */}
       <form onSubmit={handleSubmit} className="bottom-terminal-input-bar">
         <div className="input-prompt-label">
-          <span>{isBinaryMode ? textToBinary("user@terminal:~$ transmit_directive >") : "user@terminal:~$ transmit_directive >"}</span>
+          <span>{textToBinary("user@terminal:~$ transmit_directive >")}</span>
         </div>
         <div className="input-row">
           <textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={isBinaryMode ? textToBinary("TYPE_MESSAGE...") : "Type your message or prompt here... (Press Enter to transmit)"}
+            onPaste={handlePaste}
+            placeholder={textToBinary("PRESS_ANY_KEY_TO_TYPE_BINARY (01000001...)")}
             rows={2}
             className="bottom-textarea font-mono"
             disabled={isAiThinking}
@@ -101,12 +159,12 @@ const DualChatPanel = ({
             type="submit"
             disabled={!inputText.trim() || isAiThinking}
             className="bottom-send-btn font-mono"
-            title={isBinaryMode ? textToBinary("SEND (ENTER)") : "SEND (ENTER)"}
+            title={textToBinary("SEND (ENTER)")}
           >
             <Send className="w-4 h-4 text-current" />
-            <span>{isBinaryMode ? textToBinary("SEND") : "SEND"}</span>
+            <span>{textToBinary("SEND")}</span>
             <kbd className="key-badge">
-              {isBinaryMode ? textToBinary("ENTER") : "Enter ↵"}
+              {textToBinary("ENTER")}
             </kbd>
           </button>
         </div>
