@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01000100 01010010 01000001 01010111 00100000 00100110 00100000 01000101 01010110 01001111 01001100 01010110 01000101</title>
+  <meta name="description" content="01000001 01010011 01000011 01001001 01001001 00100000 01000010 01001001 01001110 01000001 01010010 01011001 00100000 01010100 01000101 01010010 01001101 01001001 01001110 01000001 01001100">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Top Terminal Header Bar -->
+    <header class="site-header-bar font-mono">
+      <div class="bot-tag">
+        <div class="term-dots">
+          <span class="term-dot term-dot-red" title="01000011 01001100 01001111 01010011 01000101"></span>
+          <span class="term-dot term-dot-yellow" title="01001101 01001001 01001110 01001001 01001101 01001001 01011010 01000101"></span>
+          <span class="term-dot term-dot-green" title="01000101 01011000 01010000 01000001 01001110 01000100"></span>
+        </div>
+
+        <div class="bot-avatar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="4 17 10 11 4 5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+        </div>
+
+        <div class="bot-info">
+          <span class="bot-title" id="botTitle">
+            01110010 01101111 01101111 01110100 01000000 01100111 01100101 01101101 01101001 01101110 01101001 00101101 01110010 01100101 01110011 01100101 01100001 01110010 01100011 01101000
+          </span>
+          <span class="stage-badge" id="logsBadge">
+            01001100 01001111 01000111 01010011 00111010 00100000 00110001
+          </span>
+        </div>
+      </div>
+
+      <!-- Center CLI Status Box -->
+      <div class="prompt-box">
+        <span class="prompt-prefix">01100010 01100001 01110011 01101000 00100100 00100000 00101110 00101111 01100011 01101000 01100001 01110010 01110011 00101110 01110011 01101000 00100000 00111110</span>
+        <p class="prompt-text">01000111 01000101 01001101 01001001 01001110 01001001 00100000 00110011 00101110 00110110 00100000 01000100 01000001 01010100 01000001 01011111 01010011 01010100 01010010 01000101 01000001 01001101</p>
+        <span class="cli-cursor"></span>
+      </div>
+
+      <!-- Right Action Buttons -->
+      <div class="actions-group">
+        <div class="mode-toggle-btn active-binary">
+          <span>01000010 01001001 01001110 01000001 01010010 01011001</span>
+        </div>
+
+        <button id="clearBtn" class="icon-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </button>
+
+        <button id="keyBtn" class="icon-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 2l-2 2m-2-2l2 2m7 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path>
+            <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Alternating Y-Axis Timeline Chat Layout -->
+    <main class="single-stream-chat-container">
+      <div class="alternating-chat-stream" id="chatStream">
+        <!-- Messages rendered dynamically via js/app.js -->
+      </div>
+
+      <!-- User Terminal Input Bar -->
+      <form class="bottom-terminal-input-bar" id="chatForm">
+        <div class="input-prompt-label">
+          <span>01110101 01110011 01100101 01110010 01000000 01110100 01100101 01110010 01101101 01101001 01101110 01100001 01101100 00111010 01111110 00100100 00100000 01110100 01110010 01100001 01101110 01110011 01101001 01110100 01011111 01100001 01110010 01100111 01110011 00100000 00111110</span>
+        </div>
+        <div class="input-row">
+          <textarea
+            id="inputTextarea"
+            class="bottom-textarea"
+            placeholder="01010000 01110010 01100101 01110011 01110011 00100000 01100001 01101110 01111001 00100000 01101011 01100101 01111001 00100000 01110100 01101111 00100000 01100111 01100101 01101110 01100101 01100010 01100001 01110010 01111001..."
+            rows="2"
+          ></textarea>
+          <button type="submit" id="sendBtn" class="bottom-send-btn" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+            <span>01010011 01000101 01001110 01000100</span>
+            <kbd class="key-badge">01000101 01001110 01010100 01000101 01010010</kbd>
+          </button>
+        </div>
+      </form>
+    </main>
+
+  </div>
+
+  <!-- API Key Modal -->
+  <div class="modal-overlay" id="apiKeyModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="term-dots">
+            <span class="term-dot term-dot-red"></span>
+            <span class="term-dot term-dot-yellow"></span>
+            <span class="term-dot term-dot-green"></span>
+          </div>
+          <span style="font-weight: 800; font-size: 0.85rem;">01000001 01010000 01001001 01011111 01001011 01000101 01001001</span>
+        </div>
+        <button id="modalCloseBtn" style="background:none; border:none; color:#a3a3a3; cursor:pointer;">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size: 0.75rem; color: #a3a3a3; line-height: 1.4;">
+          01000011 01101111 01101110 01100101 01101001 01100111 01110101 01110010 01100101 00100000 01111001 01101111 01110101 01110010 00100000 01000111 01101111 01101111 01100111 01101100 01100101 00100000 01000111 01100101 01101101 01101001 01101110 01101001 00100000 01000001 01010000 01001001 00100000 01101011 01100101 01111001 00100000 01100010 01100101 01101100 01101111 01110111 00101110
+        </p>
+
+        <div>
+          <label style="display: block; font-size: 0.7rem; font-weight: 700; margin-bottom: 6px;">01000101 01001110 01010100 01000101 01010010 00100000 01001011 01000101 01001001 &gt;</label>
+          <input
+            type="password"
+            id="apiKeyInput"
+            class="modal-input"
+            placeholder="01000001 01001001 01111010 01100001..."
+          />
+        </div>
+
+        <a
+          href="https://aistudio.google.com/app/apikey"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="font-size: 0.75rem; color: #ffffff; text-decoration: underline;"
+        >
+          01000111 01100101 01110100 00100000 01100001 00100000 01100110 01110010 01100101 01100101 00100000 01000111 01100101 01101101 01101001 01101110 01101001 00100000 01000001 01010000 01001001 00100000 01101011 01100101 01111001 00100000 00111010 ↗
+        </a>
+
+        <div id="saveSuccessMsg" style="display: none; font-size: 0.75rem; color: #ffffff; font-weight: 700;">
+          01000001 01010000 01001001 00100000 01001011 01100101 01111001 00100000 01010011 01000001 01010110 01000101 01000100 00100001
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="modalClearBtn" class="btn-secondary">01000011 01001100 01000101 01000001 01010010</button>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" id="modalCancelBtn" class="btn-secondary">01000011 01000001 01001100 01000011 01000101 01001100</button>
+            <button type="button" id="modalSaveBtn" class="btn-primary">01010011 01000001 01010110 01000101</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/binary.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
