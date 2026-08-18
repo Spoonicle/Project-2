@@ -30,15 +30,15 @@ const DualChatPanel = ({
       return;
     }
 
-    // 2. Handle Backspace key cleanly
+    // 2. Handle Backspace key (removes full 8-bit byte chunk)
     if (e.key === 'Backspace') {
       e.preventDefault();
       setInputText(prev => {
-        if (!prev) return '';
-        if (prev.endsWith(' ')) {
-          return prev.slice(0, -2);
-        }
-        return prev.slice(0, -1);
+        const trimmed = prev.trimEnd();
+        if (!trimmed) return '';
+        const parts = trimmed.split(/\s+/);
+        parts.pop();
+        return parts.length > 0 ? parts.join(' ') + ' ' : '';
       });
       return;
     }
@@ -55,38 +55,23 @@ const DualChatPanel = ({
       return;
     }
 
-    // 4. Intercept any single character input (letters, numbers, symbols, space)
+    // 4. Intercept key press and type out its full 8-bit ASCII binary byte signature at once
     if (e.key.length === 1) {
       e.preventDefault();
       
-      // If 0 or 1, append the bit directly
+      let binaryByte = '';
       if (e.key === '0' || e.key === '1') {
-        const bitToAdd = e.key;
-        setInputText(prev => {
-          const cleanBits = prev.replace(/\s+/g, '');
-          if (cleanBits.length > 0 && cleanBits.length % 8 === 0 && !prev.endsWith(' ')) {
-            return prev + ' ' + bitToAdd;
-          }
-          return prev + bitToAdd;
-        });
+        binaryByte = e.key;
       } else {
-        // For any other letter/character, convert it to its exact 8-bit ASCII binary byte
-        const binaryByte = e.key.charCodeAt(0).toString(2).padStart(8, '0');
-        setInputText(prev => {
-          if (!prev) return binaryByte + ' ';
-          if (prev.endsWith(' ')) return prev + binaryByte + ' ';
-          return prev + ' ' + binaryByte + ' ';
-        });
+        binaryByte = e.key.charCodeAt(0).toString(2).padStart(8, '0');
       }
-    }
-  };
 
-  const handlePaste = (e) => {
-    e.preventDefault();
-    const pastedData = e.clipboardData.getData('text');
-    if (!pastedData) return;
-    const converted = textToBinary(pastedData);
-    setInputText(prev => (prev ? `${prev} ${converted}` : converted));
+      setInputText(prev => {
+        if (!prev) return binaryByte + ' ';
+        if (prev.endsWith(' ')) return prev + binaryByte + ' ';
+        return prev + ' ' + binaryByte + ' ';
+      });
+    }
   };
 
   return (
@@ -147,10 +132,9 @@ const DualChatPanel = ({
         <div className="input-row">
           <textarea
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={() => {}}
             onKeyDown={handleKeyDown}
-            onPaste={handlePaste}
-            placeholder={textToBinary("PRESS_ANY_KEY_TO_TYPE_BINARY (01000001...)")}
+            placeholder={textToBinary("Press any key to generate binary (0/1)...")}
             rows={2}
             className="bottom-textarea font-mono"
             disabled={isAiThinking}

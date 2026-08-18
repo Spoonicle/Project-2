@@ -17,13 +17,13 @@ export async function generateChatResponse({ userMessage, history = [], apiKey }
       cleanedUserMessage = decoded;
     }
   }
-  const activeKey = (apiKey && apiKey.trim() !== '') 
-    ? apiKey.trim() 
+  const activeKey = (apiKey && apiKey.trim() !== '')
+    ? apiKey.trim()
     : (import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || '');
 
   if (activeKey) {
     const models = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
-    
+
     // System instruction: Gemini acts as a curious Alien AI asking about the Human World
     const systemInstruction = {
       parts: [{

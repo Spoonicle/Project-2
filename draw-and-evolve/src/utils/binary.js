@@ -1,12 +1,17 @@
 export function isBinaryString(str) {
   if (typeof str !== 'string') return false;
   const trimmed = str.trim();
-  return trimmed.length > 0 && /^([01]{8}\s*)+$/.test(trimmed);
+  // Valid binary strings consist of space-separated 8-bit bytes
+  return trimmed.length >= 8 && /^([01]{8})(\s+[01]{8})*$/.test(trimmed);
 }
 
 export function textToBinary(str) {
   if (!str) return '';
   if (isBinaryString(str)) {
+    return str.trim();
+  }
+  // If string contains only 0s, 1s, and spaces (incomplete last byte), don't double encode
+  if (/^[01\s]+$/.test(str)) {
     return str.trim();
   }
   return str
